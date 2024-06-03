@@ -1,6 +1,7 @@
 import json
 import time
 
+
 # Description: This program converts the contents of a text file into a json object and writes it to a file called json.
 #
 #
@@ -12,10 +13,18 @@ request_file = "C:\\Users\\raulp\\Documents\\CS361\\projectfile\\cs361-project\\
 
 record_file = "C:\\Users\\raulp\\Documents\\CS361\\projectfile\\cs361-project\\record.txt"
 
-index = 0
+global index 
 
 def logger():
-    global index
+
+    with open("number.txt", "r") as infile:
+        num_str = infile.read()
+    index = int(num_str)
+
+    with open("number.txt", "w") as outfile:
+        outfile.write(str(index + 1))
+
+
 
     name = str()
     with open(record_file, "r") as infile:
@@ -48,7 +57,7 @@ def logger():
 
     with open(f"score-{name}-{index}.json", 'a') as outfile:
         json.dump(score, outfile)
-        index += 1
+
 
                 
         
@@ -68,6 +77,8 @@ while True:
         x = open(request_file,'w')
         x.write("request fullfilled")
         x.close()
+        
+
         
 
 
