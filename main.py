@@ -1,27 +1,74 @@
 import json
 import time
 
+# Description: This program converts the contents of a text file into a json object and writes it to a file called json.
+#
+#
+#
+
+print("score-logger service is running...")
+
+request_file = "C:\\Users\\raulp\\Documents\\CS361\\projectfile\\cs361-project\\request.txt"
+
+record_file = "C:\\Users\\raulp\\Documents\\CS361\\projectfile\\cs361-project\\record.txt"
+
+index = 0
+
+def logger():
+
+    name = str()
+    with open(record_file, "r") as infile:
+
+        lines = infile.readlines()
+
+        score = dict()
+        last = str()
+        isKey = True
+        for line in lines:
+            words = line.split("'")
+
+            for word in words:
+                if word == '':
+                    break
+                # identifies the name of the player to use it in the file name
+                if isKey is True:
+                    if word == 'Name':
+                        isName = True
+                    score[word] = None
+                    last = word
+                    isKey = False
+                
+                else:
+                    if isName is True:
+                        name = word
+                        isName = False
+                    score[last] = word
+                    isKey = True
+
+    with open(f"score-{name}-{index}.json", 'a') as outfile:
+        json.dump(score, outfile)
+        json.dump(";", outfile)
+        index += 1
+                
+        
+while True:
+    time.sleep(0.25)
+    with open(request_file, 'r') as infile:
+        request = infile.read()
+    open(request_file, 'w').close()
+
+    if request == 'log results':
+        print('service requested')
+        x = open(request_file,'w')
+        x.write("request received")
+        x.close()
+        logger()
+        print('request fulfilled')
+        x = open(request_file,'w')
+        x.write("request fullfilled")
+        x.close()
+        
 
 
-# name - self explanatory
-# round_qty - it is filled in when the round qty is initially declared
-# round_results - after each round, it is updated. The parameters follow this format: (player choice, computer choice, round winner)
-# winner - filled in after the last round
-#score - filled in after the last round in this format: (rounds player won, rounds computer won)
-
-score001 = {
-    "name": "Raul Preciado",
-    "round_qty": 3,
-    "round_results": [('rock', 'paper', 'lose'), ('rock', 'rock', 'draw'), ('paper', 'rock', 'win')],
-    "winner": "Raul Preciado",
-    "score": (2, 0)
-
-}
-
-with open('score.json', 'w') as outfile:
-    outfile.write(json.dumps(score001))
-
-
-with open("score.json", "r") as infile:
-    log = json.loads(infile.read())
-print(log)
+            
+    
