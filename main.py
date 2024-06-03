@@ -2,10 +2,7 @@ import json
 import time
 
 
-# Description: This program converts the contents of a text file into a json object and writes it to a file called json.
-#
-#
-#
+
 
 print("score-logger service is running...")
 
@@ -15,8 +12,13 @@ record_file = "C:\\Users\\raulp\\Documents\\CS361\\projectfile\\cs361-project\\r
 
 global index 
 
-def logger():
-
+def text_parse():
+    """
+    This function opens up a text file located at the location defined in 'record_file'. It then iterates through
+    the text extracting keys and values from which to insert into a dictionary object which gets converted into a 
+    json object after parsing the contents of the text file. 
+    
+    """
     with open("number.txt", "r") as infile:
         num_str = infile.read()
     index = int(num_str)
@@ -32,7 +34,7 @@ def logger():
         lines = infile.readlines()
 
         score = dict()
-        last = str()
+        key = str()
         isKey = True
         for line in lines:
             words = line.split("'")
@@ -44,22 +46,25 @@ def logger():
                 if isKey is True:
                     if word == 'Name':
                         isName = True
-                    score[word] = None
-                    last = word
+                
+                    key = word
                     isKey = False
                 
                 else:
                     if isName is True:
                         name = word
                         isName = False
-                    score[last] = word
+                    score[key] = word
                     isKey = True
-
-    with open(f"score-{name}-{index}.json", 'a') as outfile:
+    file_name = f"files\\score-{name}-{index}.json"
+    with open(file_name, 'a') as outfile:
         json.dump(score, outfile)
 
+    with open("C:\\Users\\raulp\\Documents\\CS361\\projectfile\\jsontotable\\path.txt", "w") as outfile:
+        outfile.write(f"C:\\Users\\raulp\\Documents\\CS361\\projectfile\\score-service\\{file_name}")
 
-                
+
+   
         
 while True:
     time.sleep(0.25)
@@ -72,7 +77,7 @@ while True:
         x = open(request_file,'w')
         x.write("request received")
         x.close()
-        logger()
+        text_parse()
         print('request fulfilled')
         x = open(request_file,'w')
         x.write("request fullfilled")
