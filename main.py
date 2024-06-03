@@ -15,6 +15,7 @@ record_file = "C:\\Users\\raulp\\Documents\\CS361\\projectfile\\cs361-project\\r
 index = 0
 
 def logger():
+    global index
 
     name = str()
     with open(record_file, "r") as infile:
@@ -47,8 +48,8 @@ def logger():
 
     with open(f"score-{name}-{index}.json", 'a') as outfile:
         json.dump(score, outfile)
-        json.dump(";", outfile)
         index += 1
+
                 
         
 while True:
